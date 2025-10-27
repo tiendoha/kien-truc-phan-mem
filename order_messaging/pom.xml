@@ -20,7 +20,12 @@
         <!-- Phụ thuộc vào order-domain để sử dụng domain logic -->
         <dependency>
             <groupId>com.system</groupId>
-            <artifactId>order_domain</artifactId>
+            <artifactId>order_domain_core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.system</groupId>
+            <artifactId>order_application_service</artifactId>
             <version>${project.version}</version>
         </dependency>
 

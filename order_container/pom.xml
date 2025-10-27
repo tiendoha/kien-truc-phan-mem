@@ -14,11 +14,7 @@
 
     <dependencies>
         <!-- Các module con -->
-        <dependency>
-            <groupId>com.system</groupId>
-            <artifactId>order_domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>com.system</groupId>
             <artifactId>order_domain_core</artifactId>
@@ -86,6 +82,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.system.order_container.OrderSystemApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

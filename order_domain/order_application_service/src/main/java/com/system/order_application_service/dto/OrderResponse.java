@@ -16,14 +16,21 @@ public class OrderResponse {
     private String failureMessages;
     private ZonedDateTime createdAt;
 
-    // Default constructor
+    private BigDecimal originalPrice;
+    private BigDecimal discount;
+    private String voucherCode;
+    private Integer rating;
+    private String comment;
+
+
     public OrderResponse() {
     }
 
-    // All-args constructor
+
     public OrderResponse(UUID id, UUID customerId, UUID restaurantId, UUID trackingId, BigDecimal price,
                          String orderStatus, List<OrderItemResponse> items, String failureMessages,
-                         ZonedDateTime createdAt) {
+                         ZonedDateTime createdAt, BigDecimal originalPrice, BigDecimal discount,
+                         String voucherCode, Integer rating, String comment) {
         this.id = id;
         this.customerId = customerId;
         this.restaurantId = restaurantId;
@@ -33,9 +40,25 @@ public class OrderResponse {
         this.items = items;
         this.failureMessages = failureMessages;
         this.createdAt = createdAt;
+        this.originalPrice = originalPrice;
+        this.discount = discount;
+        this.voucherCode = voucherCode;
+        this.rating = rating;
+        this.comment = comment;
     }
 
-    // Getters and setters
+
+    public BigDecimal getOriginalPrice() { return originalPrice; }
+    public void setOriginalPrice(BigDecimal originalPrice) { this.originalPrice = originalPrice; }
+    public BigDecimal getDiscount() { return discount; }
+    public void setDiscount(BigDecimal discount) { this.discount = discount; }
+    public String getVoucherCode() { return voucherCode; }
+    public void setVoucherCode(String voucherCode) { this.voucherCode = voucherCode; }
+    public Integer getRating() { return rating; }
+    public void setRating(Integer rating) { this.rating = rating; }
+    public String getComment() { return comment; }
+    public void setComment(String comment) { this.comment = comment; }
+
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
     public UUID getCustomerId() { return customerId; }

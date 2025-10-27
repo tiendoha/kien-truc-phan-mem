@@ -6,6 +6,7 @@ public class CreateOrderRequest {
     private UUID customerId;
     private UUID restaurantId;
     private List<OrderItemRequest> items;
+    private String voucherCode; // <-- THÊM DÒNG NÀY
 
     // Getters and setters
     public UUID getCustomerId() { return customerId; }
@@ -14,4 +15,7 @@ public class CreateOrderRequest {
     public void setRestaurantId(UUID restaurantId) { this.restaurantId = restaurantId; }
     public List<OrderItemRequest> getItems() { return items; }
     public void setItems(List<OrderItemRequest> items) { this.items = items; }
+
+    public String getVoucherCode() { return voucherCode; }
+    public void setVoucherCode(String voucherCode) { this.voucherCode = voucherCode; }
 }

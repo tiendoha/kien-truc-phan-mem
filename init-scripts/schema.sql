@@ -45,3 +45,14 @@ CREATE INDEX idx_orders_tracking_id
 
 CREATE INDEX idx_orders_customer_id
     ON "order".orders(customer_id);
+
+ALTER TABLE "order".orders
+    ADD COLUMN original_price NUMERIC(10, 2),
+    ADD COLUMN discount NUMERIC(10, 2) DEFAULT 0,
+    ADD COLUMN voucher_code VARCHAR;
+
+ALTER TABLE "order".orders
+    ADD COLUMN rating INTEGER,
+    ADD COLUMN comment VARCHAR;
+
+UPDATE "order".orders SET original_price = price;

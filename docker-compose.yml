@@ -54,17 +54,20 @@ services:
       order-kafka:
         condition: service_started
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://order-postgres:5433/order_db
+      # Sử dụng tên service của Docker, không dùng 'localhost'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://order-postgres:5432/order_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_KAFKA_BOOTSTRAP_SERVERS: order-kafka:9092
     ports:
-      - "8080:8080"
+      # Ánh xạ port 8081 của máy bạn (host) sang port 8081 của container
+      - "8088:8081"
     networks:
       - order-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      # Cập nhật port healthcheck sang 8081
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
