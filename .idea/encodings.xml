@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/order_system/order_container/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_container/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_dataaccess/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_dataaccess/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_domain/order_application_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_domain/order_application_service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_domain/order_domain_core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_domain/order_domain_core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_messaging/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/order_messaging/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order_system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_container/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_container/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_dataaccess/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_dataaccess/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_domain/payment_application_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_domain/payment_application_service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_domain/payment_domain_core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_domain/payment_domain_core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_messaging/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/payment_messaging/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/payment-system/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

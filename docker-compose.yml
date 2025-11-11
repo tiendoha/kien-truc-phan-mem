@@ -1,0 +1,107 @@
+services:
+  order-zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: order-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - microservice-network
+
+  order-kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: order-kafka
+    depends_on:
+      - order-zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: order-zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://order-kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    networks:
+      - microservice-network
+
+  order-postgres:
+    image: postgres:14-alpine
+    container_name: order-postgres
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # === PHẦN CẬP NHẬT ===
+      # 1. Lấy schema của order từ dự án order_system
+      - ./order_system/init-scripts/schema.sql:/docker-entrypoint-initdb.d/1_order_schema.sql
+      # 2. Lấy schema của payment từ dự án payment_system
+      - ./payment-system/init-scripts/payment-schema.sql:/docker-entrypoint-initdb.d/2_payment_schema.sql
+      # === KẾT THÚC CẬP NHẬT ===
+    networks:
+      - microservice-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  order-service:
+    build:
+      # ĐÃ CẬP NHẬT: build từ thư mục ./order_system
+      context: ./order_system
+      dockerfile: Dockerfile
+    container_name: order-service
+    depends_on:
+      order-postgres:
+        condition: service_healthy
+      order-kafka:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://order-postgres:5432/order_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: order-kafka:9092
+    ports:
+      - "8088:8081"
+    networks:
+      - microservice-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  payment-service:
+    build:
+      # ĐÃ CẬP NHẬT: build từ thư mục ./payment-system
+      context: ./payment-system
+      dockerfile: Dockerfile
+    container_name: payment-service
+    depends_on:
+      order-postgres:
+        condition: service_healthy
+      order-kafka:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8089:8082"
+    networks:
+      - microservice-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+
+networks:
+  microservice-network:
+    driver: bridge

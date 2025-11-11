@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: payment-container
+  datasource:
+    url: jdbc:postgresql://localhost:5433/order_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate # Sẽ validate schema "payment"
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: payment # QUAN TRỌNG: Đặt schema mặc định
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: payment-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: "paymentRequest:com.system.payment_application_service.dto.PaymentRequest"
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+server:
+  port: 8082 # Port mới
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

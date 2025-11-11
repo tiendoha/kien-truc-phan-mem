@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: order-container
+  datasource:
+    url: jdbc:postgresql://localhost:5433/order_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  main:
+    allow-circular-references: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer: # <-- THÊM PHẦN NÀY
+      group-id: order-payment-response-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default-type: com.system.order_application_service.dto.PaymentResponse
+    producer: # <-- THÊM PHẦN NÀY
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
