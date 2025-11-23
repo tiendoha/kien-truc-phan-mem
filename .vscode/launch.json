@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-OrderSystemApplication<order-container>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.system.order_container.OrderSystemApplication",
+            "projectName": "order-container",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-App<payment_dataaccess>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.example.App",
+            "projectName": "payment_dataaccess",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PaymentSystemApplication<payment_container>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.system.payment_container.PaymentSystemApplication",
+            "projectName": "payment_container",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+package com.system.payment_container.rest.dto;
+
+import com.system.payment_domain_core.valueobject.PaymentStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class RestPaymentSummaryDto {
+    private UUID paymentId;
+    private UUID orderId;
+    private UUID customerId;
+    private BigDecimal price;
+    private PaymentStatus status;
+    private ZonedDateTime createdAt;
+
+    public static RestPaymentSummaryDto fromPaymentSummaryDto(
+            com.system.payment_application_service.dto.PaymentSummaryDto summaryDto) {
+        return RestPaymentSummaryDto.builder()
+                .paymentId(summaryDto.getPaymentId())
+                .orderId(summaryDto.getOrderId())
+                .customerId(summaryDto.getCustomerId())
+                .price(summaryDto.getPrice())
+                .status(summaryDto.getStatus())
+                .createdAt(summaryDto.getCreatedAt())
+                .build();
+    }
+}

@@ -1,0 +1,102 @@
+services:
+  order-zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: order-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  order-kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: order-kafka
+    depends_on:
+      order-zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: order-zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://order-kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  order-postgres:
+    image: postgres:14-alpine
+    container_name: order-postgres
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5444:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Lấy schema của order từ dự án order_system
+      - ./order_system/init-scripts/order-schema.sql:/docker-entrypoint-initdb.d/1_order_schema.sql
+    # networks:
+    #   - microservice-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  payment-postgres:
+    image: postgres:14-alpine
+    container_name: payment-postgres
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - payment_postgres_data:/var/lib/postgresql/data
+      # Lấy schema của payment từ dự án payment_system
+      - ./payment-system/init-scripts/payment-schema.sql:/docker-entrypoint-initdb.d/1_payment_schema.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest # Luôn lấy image mới nhất
+    container_name: kafka-ui
+    depends_on:
+      order-kafka:
+        condition: service_healthy
+      order-zookeeper:
+        condition: service_healthy
+    ports:
+      - "8080:8080" # Dashboard UI sẽ chạy ở cổng 8080 trên máy của bạn
+    environment:
+      # Cấu hình kết nối đến Kafka cluster
+      KAFKA_CLUSTERS_0_NAME: "Local Docker Cluster" # Tên hiển thị trên UI
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "order-kafka:29092" # <-- Quan trọng
+      KAFKA_CLUSTERS_0_ZOOKEEPER: "order-zookeeper:2181"     # <-- Quan trọng
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  payment_postgres_data:

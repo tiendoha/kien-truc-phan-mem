@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="order_dataaccess" />
+        <module name="order_application_service" />
+        <module name="payment_dataaccess" />
+        <module name="payment_application_service" />
+        <module name="payment_messaging" />
+        <module name="order_messaging" />
+        <module name="payment_container" />
+        <module name="order_domain_core" />
+        <module name="payment_domain_core" />
+        <module name="order-container" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
